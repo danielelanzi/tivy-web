@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="it" data-lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0d12" />
+    <title>Tivy · Note legali</title>
+    <link rel="icon" href="favicon.png" />
+    <link rel="preload" href="outfit.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      /* Outfit (SIL Open Font License 1.1, outfit-license.txt) served by this site, not by
+         Google: whoever opens the page talks only to this site. */
+      @font-face {
+        font-family: Outfit;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(outfit.woff2) format('woff2');
+      }
+      :root {
+        --background: #0b0d12;
+        --surface: #151821;
+        --surface-strong: #1d212c;
+        --line: #272c38;
+        --text: #f4f5f7;
+        --muted: #a3a8b4;
+        --accent: #e8b04b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--text);
+        font-family: Outfit, system-ui, sans-serif;
+        line-height: 1.5;
+      }
+      a {
+        color: var(--accent);
+      }
+      .page {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      header img {
+        height: 56px;
+        width: auto;
+        margin: -8px 0 0 -10px;
+      }
+      .version {
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .hero {
+        padding: 56px 0 40px;
+        max-width: 720px;
+      }
+      h1 {
+        margin: 0 0 16px;
+        font-size: clamp(36px, 6vw, 60px);
+        line-height: 1.05;
+        font-weight: 800;
+      }
+      .lead {
+        margin: 0;
+        color: #c9cdd6;
+        font-size: clamp(18px, 2.4vw, 21px);
+      }
+      .devices {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+      .device {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface);
+      }
+      .device.suggested {
+        border-color: var(--accent);
+      }
+      .device h2 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .device p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .device .actions {
+        margin-top: auto;
+        padding-top: 8px;
+      }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 48px;
+        padding: 0 22px;
+        border-radius: 999px;
+        background: var(--text);
+        color: var(--background);
+        font-weight: 600;
+        font-size: 17px;
+        text-decoration: none;
+      }
+      .button.secondary {
+        background: var(--surface-strong);
+        color: var(--text);
+      }
+      .button:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+      .device svg {
+        width: 32px;
+        height: 32px;
+        color: var(--accent);
+      }
+      .badge {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        padding: 2px 10px;
+        border-radius: 999px;
+        background: rgba(232, 176, 75, 0.15);
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 600;
+      }
+      section.help {
+        margin-top: 56px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 32px;
+      }
+      section.help h3 {
+        margin: 0 0 12px;
+        font-size: 20px;
+      }
+      ol {
+        margin: 0;
+        padding-left: 22px;
+        color: #c9cdd6;
+      }
+      ol li {
+        margin-bottom: 8px;
+      }
+      code {
+        padding: 1px 6px;
+        border-radius: 6px;
+        background: var(--surface-strong);
+        color: var(--text);
+        font-family: inherit;
+        font-weight: 600;
+      }
+      footer {
+        margin-top: 64px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 14px;
+      }
+      html[data-lang='it'] [data-l='en'],
+      html[data-lang='en'] [data-l='it'] {
+        display: none !important;
+      }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .language {
+        min-height: 36px;
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .language:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+      .quick {
+        margin-top: 40px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 24px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface);
+      }
+      .quick .text {
+        flex: 1 1 280px;
+      }
+      .quick h2 {
+        margin: 0 0 8px;
+        font-size: 22px;
+      }
+      .quick p {
+        margin: 0 0 8px;
+        color: #c9cdd6;
+      }
+      .quick .code {
+        font-size: 28px;
+        letter-spacing: 2px;
+      }
+      .qr {
+        width: 148px;
+        height: 148px;
+        border-radius: 8px;
+        flex: none;
+      }
+      .note {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      [data-code-row][hidden] {
+        display: none;
+      }
+      section.legal {
+        max-width: 760px;
+      }
+      section.legal h2 {
+        margin: 40px 0 12px;
+        font-size: 24px;
+      }
+      section.legal p,
+      section.legal li {
+        color: #c9cdd6;
+      }
+      section.legal ul {
+        padding-left: 22px;
+      }
+      section.legal li {
+        margin-bottom: 8px;
+      }
+      .hero.legal {
+        padding-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <a href="./"><img src="logo.png" alt="Tivy" width="90" height="56" /></a>
+        <div class="header-right">
+          <button class="language" id="language" type="button">
+            <span data-l="it">English</span><span data-l="en">Italiano</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="hero legal">
+        <h1><span data-l="it">Note legali</span><span data-l="en">Legal notes</span></h1>
+        <p class="lead" data-l="it">
+          Tivy è un progetto personale e gratuito: un lettore, come VLC.
+        </p>
+        <p class="lead" data-l="en">Tivy is a free personal project: a player, like VLC.</p>
+      </section>
+
+      <section class="legal">
+        <h2><span data-l="it">Contenuti</span><span data-l="en">Content</span></h2>
+        <p data-l="it">
+          Tivy non vende e non fornisce canali, video o abbonamenti. È solo un lettore: mostra
+          quello che c'è nelle fonti che aggiungi tu, e di quelle sei responsabile tu.
+        </p>
+        <p data-l="en">
+          Tivy does not sell or provide channels, videos or subscriptions. It is only a player: it
+          shows what is in the sources you add, and you are responsible for them.
+        </p>
+
+        <h2>Privacy</h2>
+        <p data-l="it">
+          Tivy non raccoglie dati personali, non ha account, statistiche né pubblicità. Fonti,
+          password, profili e preferiti restano sul tuo dispositivo: sulla TV e sul telefono le
+          password stanno nella memoria sicura di Android, nel browser nella memoria del browser.
+          Non usiamo cookie.
+        </p>
+        <p data-l="it">Alcuni servizi di altri ricevono comunque l'indirizzo IP del dispositivo:</p>
+        <ul data-l="it">
+          <li>
+            GitHub, che ospita questo sito e da cui l'app scaricata dal sito controlla se c'è un
+            aggiornamento;
+          </li>
+          <li>Google, per il carattere di queste pagine;</li>
+          <li>
+            Cloudflare e Google, solo quando il dispositivo non trova il server di una fonte:
+            ricevono il nome di quel server, per trovarlo al suo posto;
+          </li>
+          <li>
+            Wikimedia (Wikidata e Commons), per riconoscere i titoli delle piattaforme e per alcuni
+            loghi, solo nell'app del sito e nel browser;
+          </li>
+          <li>
+            Cloudflare, quando usi il QR per mandare una fonte dal telefono alla TV: i dati passano
+            cifrati con una chiave che resta tra telefono e TV, nessuno li può leggere e non vengono
+            tenuti;
+          </li>
+          <li>
+            i server delle fonti che aggiungi, che ricevono le tue richieste come con qualsiasi
+            lettore.
+          </li>
+        </ul>
+        <p data-l="it">
+          Per cancellare tutto: nell'app togli le fonti o disinstallala; nel browser cancella i dati
+          dei siti tivy.dlzero.com e tv.dlzero.com.
+        </p>
+        <p data-l="en">
+          Tivy collects no personal data and has no accounts, analytics or ads. Sources, passwords,
+          profiles and favourites stay on your device: on TVs and phones passwords are kept in
+          Android's secure storage, in the browser in the browser's storage. We use no cookies.
+        </p>
+        <p data-l="en">Some services of others still receive the device's IP address:</p>
+        <ul data-l="en">
+          <li>
+            GitHub, which hosts this site and where the app downloaded from the site checks for
+            updates;
+          </li>
+          <li>Google, for the typeface of these pages;</li>
+          <li>
+            Cloudflare and Google, only when the device can't find the server of a source: they get
+            that server's name, to find it instead;
+          </li>
+          <li>
+            Wikimedia (Wikidata and Commons), to recognise the titles of platforms and for some
+            logos, only in the app from the site and in the browser;
+          </li>
+          <li>
+            Cloudflare, when you use the QR code to send a source from your phone to the TV: the
+            data travels encrypted with a key that stays between phone and TV, nobody can read it
+            and it is not kept;
+          </li>
+          <li>the servers of the sources you add, which get your requests as with any player.</li>
+        </ul>
+        <p data-l="en">
+          To erase everything: remove the sources in the app or uninstall it; in the browser, clear
+          the data of the sites tivy.dlzero.com and tv.dlzero.com.
+        </p>
+
+        <h2><span data-l="it">Termini d'uso</span><span data-l="en">Terms of use</span></h2>
+        <ul data-l="it">
+          <li>
+            Tivy è gratuita e la offriamo così com'è: facciamo del nostro meglio, ma non possiamo
+            garantire che funzioni sempre.
+          </li>
+          <li>
+            Oggi Tivy è gratuita. In futuro potrebbe diventare a pagamento, in tutto o in parte: se
+            succederà lo diremo prima, qui e nell'app.
+          </li>
+          <li>Usala con fonti che hai il diritto di guardare.</li>
+          <li>
+            Tivy e il suo codice sono di DLZero, tutti i diritti riservati: non si possono copiare,
+            modificare o ridistribuire senza permesso. Le parti open source restano libere secondo
+            le loro licenze, elencate qui sotto.
+          </li>
+        </ul>
+        <ul data-l="en">
+          <li>
+            Tivy is free and offered as is: we do our best, but we can't promise it always works.
+          </li>
+          <li>
+            Tivy is free today. In the future it may become paid, in whole or in part: if that
+            happens, we'll say so beforehand, here and in the app.
+          </li>
+          <li>Use it with sources you have the right to watch.</li>
+          <li>
+            Tivy and its code belong to DLZero, all rights reserved: they may not be copied,
+            modified or redistributed without permission. The open source parts stay free under
+            their own licenses, listed below.
+          </li>
+        </ul>
+
+        <h2><span data-l="it">Marchi</span><span data-l="en">Trademarks</span></h2>
+        <p data-l="it">
+          Nomi e loghi di servizi e piattaforme appartengono ai rispettivi proprietari. Tivy non è
+          collegata a nessuno di loro e li usa solo per riconoscere i gruppi delle liste
+          dell'utente.
+        </p>
+        <p data-l="en">
+          Names and logos of services and platforms belong to their owners. Tivy is not affiliated
+          with any of them and uses them only to recognise the groups in the user's lists.
+        </p>
+
+        <h2 id="licenses">
+          <span data-l="it">Licenze open source</span><span data-l="en">Open source licenses</span>
+        </h2>
+        <p data-l="it">Tivy usa software open source, tra cui:</p>
+        <p data-l="en">Tivy uses open source software, including:</p>
+        <ul>
+          <li>
+            <strong>FFmpeg 6.0</strong> (LGPL 2.1):
+            <span data-l="it"
+              >decoder audio dell'app Android, non modificato, in una libreria separata che puoi
+              sostituire.</span
+            >
+            <span data-l="en"
+              >audio decoders of the Android app, unmodified, in a separate library you may
+              replace.</span
+            >
+            <a href="https://github.com/FFmpeg/FFmpeg/tree/release/6.0"
+              ><span data-l="it">Codice</span><span data-l="en">Source</span></a
+            >
+            ·
+            <a href="source/ffmpeg-build/build.sh"
+              ><span data-l="it">Script di costruzione</span
+              ><span data-l="en">Build scripts</span></a
+            >
+            ·
+            <a href="https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"
+              ><span data-l="it">Licenza</span><span data-l="en">License</span></a
+            >
+          </li>
+          <li><strong>androidx/media</strong> (Apache 2.0)</li>
+          <li><strong>hls.js</strong> (Apache 2.0)</li>
+          <li><strong>React Native, Expo, React</strong> (MIT)</li>
+          <li>
+            <strong>Outfit</strong>
+            <span data-l="it">(carattere del sito, SIL Open Font License 1.1)</span
+            ><span data-l="en">(font of this site, SIL Open Font License 1.1)</span> ·
+            <a href="outfit-license.txt"
+              ><span data-l="it">Licenza</span><span data-l="en">License</span></a
+            >
+          </li>
+        </ul>
+        <p>
+          <a class="button secondary" href="third-party-licenses.txt">
+            <span data-l="it">Elenco completo con i testi delle licenze</span
+            ><span data-l="en">Full list with license texts</span>
+          </a>
+        </p>
+      </section>
+
+      <footer>
+        <p>© 2026 DLZero</p>
+        <a href="./"
+          ><span data-l="it">Torna alla pagina di download</span
+          ><span data-l="en">Back to the download page</span></a
+        >
+      </footer>
+    </div>
+
+    <script>
+      function chooseLanguage() {
+        try {
+          const saved = localStorage.getItem('tivy.language');
+          if (saved === 'it' || saved === 'en') return saved;
+        } catch {
+          // No storage: follow the browser.
+        }
+        return (navigator.language || 'it').toLowerCase().startsWith('it') ? 'it' : 'en';
+      }
+
+      let language = chooseLanguage();
+
+      function setLanguage(next) {
+        language = next;
+        document.documentElement.lang = next;
+        document.documentElement.dataset.lang = next;
+      }
+
+      document.getElementById('language').addEventListener('click', () => {
+        const next = language === 'it' ? 'en' : 'it';
+        try {
+          localStorage.setItem('tivy.language', next);
+        } catch {
+          // The choice lasts until the page closes.
+        }
+        setLanguage(next);
+      });
+
+      setLanguage(language);
+    </script>
+  </body>
+</html>

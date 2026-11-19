@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0d12" />
+    <meta name="robots" content="noindex" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Tivy</title>
+    <link rel="icon" href="../favicon.png" />
+    <style>
+      @font-face {
+        font-family: Outfit;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(../outfit.woff2) format('woff2');
+      }
+      :root {
+        --background: #0b0d12;
+        --surface: #151821;
+        --line: #272c38;
+        --text: #f4f5f7;
+        --muted: #a3a8b4;
+        --accent: #e8b04b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--text);
+        font-family: Outfit, system-ui, sans-serif;
+        font-size: 18px;
+        line-height: 1.4;
+      }
+      main {
+        max-width: 480px;
+        margin: 0 auto;
+        padding: 20px 16px 48px;
+      }
+      header img {
+        height: 44px;
+        width: auto;
+        margin-left: -8px;
+      }
+      h1 {
+        font-size: 30px;
+        margin: 8px 0 20px;
+      }
+      .kinds {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .kinds button {
+        flex: 1;
+        padding: 12px 8px;
+        border-radius: 12px;
+        border: 2px solid var(--line);
+        background: var(--surface);
+        color: var(--muted);
+        font: inherit;
+        font-size: 16px;
+      }
+      .kinds button[aria-pressed='true'] {
+        border-color: var(--accent);
+        color: var(--text);
+      }
+      label {
+        display: block;
+        margin-bottom: 16px;
+        font-size: 16px;
+        color: var(--muted);
+      }
+      input,
+      textarea {
+        display: block;
+        width: 100%;
+        margin-top: 6px;
+        padding: 12px;
+        border-radius: 12px;
+        border: 2px solid var(--line);
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+      }
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+      }
+      small {
+        display: block;
+        margin-top: 4px;
+      }
+      #send {
+        width: 100%;
+        padding: 16px;
+        border: 0;
+        border-radius: 14px;
+        background: var(--accent);
+        color: #14161c;
+        font: inherit;
+        font-weight: 700;
+        font-size: 20px;
+      }
+      #send:disabled {
+        opacity: 0.6;
+      }
+      .status {
+        min-height: 1.4em;
+        margin: 16px 0;
+        color: var(--accent);
+      }
+      .status.done {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .privacy {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header><img src="../logo.png" alt="Tivy" /></header>
+      <h1 data-text="title">Invia alla TV</h1>
+      <form id="form" autocomplete="off" novalidate>
+        <div class="kinds">
+          <button type="button" data-kind="xtream" aria-pressed="true" data-text="kindXtream">
+            Nome utente e password
+          </button>
+          <button
+            type="button"
+            data-kind="playlistUrl"
+            aria-pressed="false"
+            data-text="kindPlaylistUrl"
+          >
+            Lista da link
+          </button>
+        </div>
+        <div data-for="xtream">
+          <label><span data-text="message"></span><textarea id="message"></textarea></label>
+          <label
+            ><span data-text="server"></span
+            ><input
+              id="server"
+              type="url"
+              inputmode="url"
+              autocapitalize="none"
+              spellcheck="false"
+              placeholder="http://esempio.it:8080" />
+            <small data-text="serverHelp"></small
+          ></label>
+          <label
+            ><span data-text="username"></span
+            ><input id="username" autocapitalize="none" spellcheck="false"
+          /></label>
+          <label
+            ><span data-text="password"></span
+            ><input id="password" type="password" autocapitalize="none" spellcheck="false"
+          /></label>
+          <label><span data-text="name"></span><input id="name" /></label>
+        </div>
+        <div data-for="playlistUrl" hidden>
+          <label
+            ><span data-text="url"></span
+            ><input
+              id="url"
+              type="url"
+              inputmode="url"
+              autocapitalize="none"
+              spellcheck="false"
+              placeholder="https://esempio.it/lista.m3u"
+          /></label>
+          <label><span data-text="name"></span><input id="listName" /></label>
+        </div>
+        <button id="send" type="submit" data-text="send">Invia alla TV</button>
+      </form>
+      <p id="status" class="status" role="status"></p>
+      <p class="privacy" data-text="privacy"></p>
+    </main>
+    <script>
+      "use strict";(()=>{var Ye=Object.defineProperty;var qe=(e,t,n)=>t in e?Ye(e,t,{enumerable:!0,configurable:!0,writable:!0,value:n}):e[t]=n;var b=(e,t,n)=>qe(e,typeof t!="symbol"?t+"":t,n);var Te={action:["azione","action"],adventure:["avventur","adventure"],animation:["animazione","animati","animation","cartoni","cartoon","anime "],comedy:["commedi","comedy","comedie","comic","sitcom"],drama:["drammatic","dramma","drama"],thriller:["thriller","suspense"],horror:["horror"],scifi:["fantascienza","sci fi ","scifi","science fiction"],fantasy:["fantasy"],romance:["romantic","romance","sentimental"],crime:["crime","poliziesc","giallo ","gialli ","noir ","criminal"],mystery:["mistero","mystery"],war:["guerra","war "],western:["western"],history:["storic","historical","history"],documentary:["documentar","documentary","docuserie"],biography:["biografic","biograph","biopic"],music:["musical","concert"],family:["famiglia","family"],kids:["bambini","kids ","ragazzi","favole","children"],christmas:["natale","christmas"],superhero:["supereroi","superhero"],disaster:["catastrofic","disaster"]},ee=Object.keys(Te),pn=ee.map(e=>({genre:e,words:Te[e].map(t=>` ${t}`)}));var Ae="(?:epg|guida(?: tv)?|programma|programmi|informazioni|informazione|info|information|dati|data)",ke="(?:non disponibil[ei]|disponibil[ei]|not available|unavailable|available|n ?d|n ?a)",Wn=new RegExp(`^(?:(?:no|nessun[ao]?|senza) ${Ae}(?: ${ke})?|${Ae} ${ke}|n ?[ad])$`,"u");var mt=[{id:"netflix",name:"Netflix",words:["netflix"]},{id:"prime",name:"Prime Video",words:["prime video","amazon prime","amazon"]},{id:"disney",name:"Disney+",words:["disney"]},{id:"apple",name:"Apple TV+",words:["apple tv","appletv"]},{id:"paramount",name:"Paramount+",words:["paramount"]},{id:"hbo",name:"HBO Max",words:["hbo"]},{id:"discovery",name:"Discovery+",words:["discovery"]},{id:"dazn",name:"DAZN",words:["dazn"]},{id:"raiplay",name:"RaiPlay",words:["raiplay","rai play"]},{id:"infinity",name:"Mediaset Infinity",words:["infinity","mediaset play"]},{id:"timvision",name:"TimVision",words:["timvision","tim vision"]},{id:"crunchyroll",name:"Crunchyroll",words:["crunchyroll"]},{id:"pluto",name:"Pluto TV",words:["pluto tv","plutotv","pluto"]},{id:"rakuten",name:"Rakuten TV",words:["rakuten"]},{id:"espn",name:"ESPN",words:["espn"]},{id:"eurosport",name:"Eurosport",words:["eurosport","euro sport"]},{id:"nba",name:"NBA",words:["nba"]},{id:"nhl",name:"NHL",words:["nhl"]},{id:"ufc",name:"UFC",words:["ufc"]},{id:"eleven",name:"Eleven Sports",words:["eleven sports","eleven sport","eleven"]},{id:"bein",name:"beIN Sports",words:["bein sports","bein sport","bein"]},{id:"fifa",name:"FIFA+",words:["fifa"]},{id:"sky",name:"Sky",words:["sky","now tv"]}],gt=mt.map(({id:e,name:t})=>({id:e,name:t}));var kr=new Set("fr fra de ger deu es esp spa pt por br nl al alb ar arab tr pl ro ru gr se sw no dk fi yu exyu hr rs ba bg hu cz sk si mk in ind pk bd af ir il kr jp cn ch at be lu mx lat latino ma tn dz eg ng za ph th vn my id lt lv ee ua by am ge az kz cy mt is".split(" "));var Cr=new Set("a ad al alla alle ai agli da dal dalla dai dagli di del della delle dei degli e ed il in nel nella nei negli la le lo gli i per su sul sulla tra fra con un una uno of the and or to in on at for by an vs".split(" ")),_r=new Set("re tre due uno una mio mia tuo tua suo sua oro ora ore mai non chi che poi qui qua sei ama amo era sto sta fa va ha ho no si tu io noi voi me te ci vi ne so bar gol one two six ten man men big day war new old you her his red sea sky boy cat dog top end all out run get how why who may can now ice eye sun fox box art car bad hot mad toy law zoo air way age ace bat bee god kid kids me my we us it is be go do up".split(" "));var Rr=new Set("tv uk usa us nba nfl nhl mlb ufc wwe mma atp wta bbc cnn espn dazn mtv hbo nbc cbs abc fbi cia csi ncis tg tgr dmax ii iii iv vi vii viii ix xi xii xx xxx".split(" "));var re=` 	
+\v\f\r`;var Mr=`${re}-|bB`;var Pr=`${re}|:-_.,/`,Lr=`${re}|:-_./`;function oe(e){let t=e.trim().replace(/\/+$/,""),n=/^[a-z][a-z0-9+.-]*:\/\//i.test(t)?t:`http://${t}`;return/^(https?:\/\/[^/\s?#]+)(\/player_api\.php)?$/i.exec(n)?.[1]}var It=720*60*1e3;var ro=1440*60*1e3;function $(e){let t;try{t=new URL(e)}catch{return}if(!/\/get\.php$/i.test(t.pathname))return;let n=t.searchParams.get("username"),r=t.searchParams.get("password");if(!(!n||!r))return{serverUrl:t.origin,username:n,password:r}}var Pe=["server","url","host","dns","portal","portale","indirizzo","address"],Le=["username","user name","user","nome utente","utente"],Oe=["password","pass","pwd","psw"],se=/https?:\/\/[^\s"'<>]+/gi;function ie(e,t){for(let n of t){let o=new RegExp(`^[^\\p{L}\\p{N}]*${n.replace(" ","\\s*")}\\s*(?:[:=\u2192>-]+|\\s)\\s*(.+)$`,"iu").exec(e.trim())?.[1]?.trim();if(o)return o}}function Me(e){let t=e.match(se)?.[0]??e.trim().split(/\s/)[0]??"";try{let n=/^[a-z][a-z0-9+.-]*:\/\//i.test(t)?t:`http://${t}`;return oe(new URL(n).origin)}catch{return}}var Et=[...Pe,...Le,...Oe].sort((e,t)=>t.length-e.length).map(e=>e.replace(" ","\\s*")).join("|"),Tt=new RegExp(`\\s+(?=[^\\p{L}\\p{N}\\s]*\\s*(?:${Et})\\s*[:=])`,"giu");function ae(e){for(let n of e.match(se)??[]){let r=$(n.replace("/player_api.php","/get.php"));if(r)return r}let t={};for(let n of e.replace(Tt,`
+`).split(/\r?\n/)){let r=ie(n,Oe)?.split(/\s/)[0];if(r){t.password??(t.password=r);continue}let o=ie(n,Le)?.split(/\s/)[0];if(o){t.username??(t.username=o);continue}let a=ie(n,Pe);a&&(t.serverUrl??(t.serverUrl=Me(a)))}if(!t.serverUrl){let n=e.match(se)?.[0];n&&(t.serverUrl=Me(n))}return t}function de(e){return e instanceof Uint8Array||ArrayBuffer.isView(e)&&e.constructor.name==="Uint8Array"&&"BYTES_PER_ELEMENT"in e&&e.BYTES_PER_ELEMENT===1}var K=e=>e?`"${e}" `:"";function Ct(e,t=""){if(typeof e!="boolean")throw new TypeError(K(t)+"expected boolean, got type="+typeof e);return e}function B(e,t=""){if(typeof e!="number")throw new TypeError(K(t)+"expected number, got "+typeof e);if(!Number.isSafeInteger(e)||e<0)throw new RangeError(K(t)+"expected integer >= 0, got "+e);return e}function h(e,t,n=""){if(de(e)&&(t===void 0||e.length===t))return e;t!==void 0&&B(t,"length");let r=de(e),o=t!==void 0?` of length ${t}`:"",a=r?`length=${e.length}`:`type=${typeof e}`,d=K(n)+"expected Uint8Array"+o+", got "+a;throw r?new RangeError(d):new TypeError(d)}function H(e,t=!0){if(e.destroyed)throw new Error("hash was destroyed");if(t&&e.finished)throw new Error("digest() was already called")}function _t(e,t){h(e,void 0,"output");let n=t.outputLen;if(!(e.length>=n))throw new RangeError('"output" expected length >= '+n)}function ue(e,t){if(_t(e,t),!v(e))throw new Error("invalid output, must be aligned")}function ve(e){return new Uint8Array(e.buffer,e.byteOffset,e.byteLength)}function C(e){return new Uint32Array(e.buffer,e.byteOffset,Math.floor(e.byteLength/4))}function k(...e){for(let t=0;t<e.length;t++)e[t].fill(0)}function L(e){return new DataView(e.buffer,e.byteOffset,e.byteLength)}var O=new Uint8Array(new Uint32Array([287454020]).buffer)[0]===68;function ce(e){return e<<24&4278190080|e<<8&16711680|e>>>8&65280|e>>>24&255}var m=O?e=>e:e=>ce(e)>>>0;function Rt(e){for(let t=0;t<e.length;t++)e[t]=ce(e[t]);return e}var U=O?e=>e:Rt;function Ne(e,t){if(e=h(e),t=h(t),e.length!==t.length)return!1;let n=0;for(let r=0;r<e.length;r++)n|=e[r]^t[r];return n===0}function fe(e,t,n){let r=t,o=n||(()=>[]),a=(s,i)=>r(i,...o(s)).update(s).digest(),d=r(new Uint8Array(e),...o(new Uint8Array(0)));return a.outputLen=d.outputLen,a.blockLen=d.blockLen,a.create=(s,...i)=>r(s,...i),a}var Ue=(e,t)=>{function n(r,...o){if(h(r,void 0,"key"),e.nonceLength!==void 0){let c=o[0];h(c,e.varSizeNonce?void 0:e.nonceLength,"nonce")}let a=e.tagLength,d=e.nonceLength!==void 0?1:0;if(!e.withAAD){for(let c=d;c<o.length;c++)if(de(o[c]))throw new Error("AAD not supported")}e.withAAD&&o[d]!==void 0&&h(o[d],void 0,"AAD");let s=t(r,...o),i=(c,f)=>{if(f!==void 0){if(c!==2)throw new Error("cipher output not supported");h(f,void 0,"output")}},u=!1;return{encrypt(c,f){if(u)throw new Error("cannot encrypt() twice with same key + nonce");return u=!0,h(c,void 0,"data"),i(s.encrypt.length,f),s.encrypt(c,f)},decrypt(c,f){if(h(c,void 0,"data"),a&&c.length<a)throw new Error('"ciphertext" expected length >= tagLength='+a);return i(s.decrypt.length,f),s.decrypt(c,f)}}}return Object.assign(n,e),n};function De(e,t,n=!0){if(t===void 0)return new Uint8Array(e);if(h(t,e,"output"),n&&!v(t))throw new Error("invalid output, must be aligned");return t}function Fe(e,t,n){B(e),B(t),Ct(n);let r=new Uint8Array(16),o=L(r);return o.setBigUint64(0,BigInt(t),n),o.setBigUint64(8,BigInt(e),n),r}function v(e){return e.byteOffset%4===0}function _(e){return Uint8Array.from(h(e))}var R=16,Ge=new Uint8Array(16),D=C(Ge),Mt=225,Pt=(e,t,n,r)=>{let o=r&1;return{s3:n<<31|r>>>1,s2:t<<31|n>>>1,s1:e<<31|t>>>1,s0:e>>>1^Mt<<24&-(o&1)}},W=e=>(e>>>0&255)<<24|(e>>>8&255)<<16|(e>>>16&255)<<8|e>>>24&255|0;var Lt=e=>e>64*1024?8:e>1024?4:2,le=class{constructor(t,n){b(this,"blockLen",R);b(this,"outputLen",R);b(this,"s0",0);b(this,"s1",0);b(this,"s2",0);b(this,"s3",0);b(this,"finished",!1);b(this,"destroyed",!1);b(this,"t");b(this,"W");b(this,"windowSize");h(t,16,"key"),t=_(t);let r=L(t),o=r.getUint32(0,!1),a=r.getUint32(4,!1),d=r.getUint32(8,!1),s=r.getUint32(12,!1),i=[];for(let p=0;p<128;p++)i.push({s0:W(o),s1:W(a),s2:W(d),s3:W(s)}),{s0:o,s1:a,s2:d,s3:s}=Pt(o,a,d,s);let u=Lt(n||1024);if(![1,2,4,8].includes(u))throw new Error("ghash: invalid window size, expected 2, 4 or 8");this.W=u;let c=128/u,f=this.windowSize=2**u,g=[];for(let p=0;p<c;p++)for(let y=0;y<f;y++){let S=0,w=0,I=0,P=0;for(let E=0;E<u;E++){if(!(y>>>u-E-1&1))continue;let{s0:Z,s1:je,s2:Xe,s3:Ve}=i[u*p+E];S^=Z,w^=je,I^=Xe,P^=Ve}g.push({s0:S,s1:w,s2:I,s3:P})}this.t=g}_updateBlock(t,n,r,o){t^=this.s0,n^=this.s1,r^=this.s2,o^=this.s3;let{W:a,t:d,windowSize:s}=this,i=0,u=0,l=0,c=0,f=(1<<a)-1,g=0;for(let p of[t,n,r,o])for(let y=0;y<4;y++){let S=p>>>8*y&255;for(let w=8/a-1;w>=0;w--){let I=S>>>a*w&f,{s0:P,s1:E,s2:N,s3:Z}=d[g*s+I];i^=P,u^=E,l^=N,c^=Z,g+=1}}this.s0=i,this.s1=u,this.s2=l,this.s3=c}update(t){H(this),h(t),t=_(t);let n=C(t),r=Math.floor(t.length/R),o=t.length%R;for(let a=0;a<r;a++)this._updateBlock(m(n[a*4+0]),m(n[a*4+1]),m(n[a*4+2]),m(n[a*4+3]));return o&&(Ge.set(t.subarray(r*R)),this._updateBlock(m(D[0]),m(D[1]),m(D[2]),m(D[3])),k(D)),this}destroy(){this.destroyed=!0;let{t}=this;for(let n of t)n.s0=0,n.s1=0,n.s2=0,n.s3=0}digestInto(t){H(this),ue(t,this),this.finished=!0;let{s0:n,s1:r,s2:o,s3:a}=this,d=C(t);d[0]=n,d[1]=r,d[2]=o,d[3]=a,O||U(d.subarray(0,R/4))}digest(){let t=new Uint8Array(R);return this.digestInto(t),this.destroy(),t}};var pe=fe(16,(e,t)=>new le(e,t),e=>[e.length]);var ge=16,Ot=4,z=new Uint8Array(ge);var vt=283;function Nt(e){if(![16,24,32].includes(e.length))throw new Error('"aes key" expected Uint8Array of length 16/24/32, got length='+e.length)}function he(e){return e<<1^vt&-(e>>7)}function $e(e,t){let n=0;for(;t>0;t>>=1)n^=e&-(t&1),e=he(e);return n}var Ut=(()=>{let e=new Uint8Array(256);for(let n=0,r=1;n<256;n++,r^=he(r))e[n]=r;let t=new Uint8Array(256);t[0]=99;for(let n=0;n<255;n++){let r=e[255-n];r|=r<<8,t[e[n]]=(r^r>>4^r>>5^r>>6^r>>7^99)&255}return k(e),t})();var Dt=e=>e<<24|e>>>8,me=e=>e<<8|e>>>24;function Ft(e,t){if(e.length!==256)throw new Error("wrong sbox length");let n=new Uint32Array(256).map((u,l)=>t(e[l])),r=n.map(me),o=r.map(me),a=o.map(me),d=new Uint32Array(256*256),s=new Uint32Array(256*256),i=new Uint16Array(256*256);for(let u=0;u<256;u++)for(let l=0;l<256;l++){let c=u*256+l;d[c]=n[u]^r[l],s[c]=o[u]^a[l],i[c]=e[u]<<8|e[l]}return{sbox:e,sbox2:i,T0:n,T1:r,T2:o,T3:a,T01:d,T23:s}}var Be=Ft(Ut,e=>$e(e,3)<<24|e<<16|e<<8|$e(e,2));var Gt=(()=>{let e=new Uint8Array(16);for(let t=0,n=1;t<16;t++,n=he(n))e[t]=n;return e})();function $t(e){h(e);let t=e.length;Nt(e);let{sbox2:n}=Be,r=[];(!O||!v(e))&&r.push(e=_(e));let o=U(C(e)),a=o.length,d=i=>F(n,i,i,i,i),s=new Uint32Array(t+28);s.set(o);for(let i=a;i<s.length;i++){let u=s[i-1];i%a===0?u=d(Dt(u))^Gt[i/a-1]:a>6&&i%a===4&&(u=d(u)),s[i]=s[i-a]^u}return k(...r),s}function j(e,t,n,r,o,a){return e[n<<8&65280|r>>>8&255]^t[o>>>8&65280|a>>>24&255]}function F(e,t,n,r,o){return e[t&255|n&65280]|e[r>>>16&255|o>>>16&65280]<<16}function Ke(e,t,n,r,o){let{sbox2:a,T01:d,T23:s}=Be,i=0;t^=e[i++],n^=e[i++],r^=e[i++],o^=e[i++];let u=e.length/4-2;for(let p=0;p<u;p++){let y=e[i++]^j(d,s,t,n,r,o),S=e[i++]^j(d,s,n,r,o,t),w=e[i++]^j(d,s,r,o,t,n),I=e[i++]^j(d,s,o,t,n,r);t=y,n=S,r=w,o=I}let l=e[i++]^F(a,t,n,r,o),c=e[i++]^F(a,n,r,o,t),f=e[i++]^F(a,r,o,t,n),g=e[i++]^F(a,o,t,n,r);return{s0:l,s1:c,s2:f,s3:g}}function X(e,t,n,r,o){h(n,ge,"nonce"),h(r),o=De(r.length,o);let a=n,d=C(a),s=L(a),i=C(r),u=C(o),l=t?0:12,c=r.length,f=s.getUint32(l,t);for(let p=0;p+4<=i.length;p+=4){let{s0:y,s1:S,s2:w,s3:I}=Ke(e,m(d[0]),m(d[1]),m(d[2]),m(d[3]));u[p+0]=i[p+0]^m(y),u[p+1]=i[p+1]^m(S),u[p+2]=i[p+2]^m(w),u[p+3]=i[p+3]^m(I),f=f+1>>>0,s.setUint32(l,f,t)}let g=ge*Math.floor(i.length/Ot);if(g<c){let{s0:p,s1:y,s2:S,s3:w}=Ke(e,m(d[0]),m(d[1]),m(d[2]),m(d[3])),I=new Uint32Array([p,y,S,w]);U(I);let P=ve(I);for(let E=g,N=0;E<c;E++,N++)o[E]=r[E]^P[N];k(I)}return o}function Kt(e,t,n,r,o){let a=o?o.length:0,d=e.create(n,r.length+a);o&&d.update(o);let s=Fe(8*r.length,8*a,t);d.update(r),d.update(s);let i=d.digest();return k(s),i}var He=Ue({blockSize:16,nonceLength:12,tagLength:16,withAAD:!0,varSizeNonce:!0},function(t,n,r){if(n.length<8)throw new Error("aes/gcm: invalid nonce length");let o=16;function a(s,i,u){let l=Kt(pe,!1,s,u,r);for(let c=0;c<i.length;c++)l[c]^=i[c];return l}function d(){let s=$t(t),i=z.slice(),u=z.slice();if(X(s,!1,u,u,i),n.length===12)u.set(n);else{let c=z.slice();L(c).setBigUint64(8,BigInt(n.length*8),!1);let g=pe.create(i).update(n).update(c);g.digestInto(u),g.destroy()}let l=X(s,!1,u,z);return{xk:s,authKey:i,counter:u,tagMask:l}}return{encrypt(s){let{xk:i,authKey:u,counter:l,tagMask:c}=d(),f=new Uint8Array(s.length+o),g=[i,u,l,c];v(s)||g.push(s=_(s)),X(i,!1,l,s,f.subarray(0,s.length));let p=a(u,c,f.subarray(0,f.length-o));return g.push(p),f.set(p,s.length),k(...g),f},decrypt(s){let{xk:i,authKey:u,counter:l,tagMask:c}=d(),f=[i,u,c,l];v(s)||f.push(s=_(s));let g=s.subarray(0,-o),p=s.subarray(-o),y=a(u,c,g);if(f.push(y),!Ne(y,p))throw k(...f),new Error("aes-gcm: invalid tag");let S=X(i,!1,l,g);return k(...f),S}}});var Bt=600*1e3,Ht=8*1024;var Wt=12;function ye(e){let t=/^#?([A-Za-z0-9_-]{22})\.([A-Za-z0-9_-]{43})$/.exec(e.trim());if(!(!t?.[1]||!t[2]))return{room:t[1],key:t[2]}}function be(e,{room:t,key:n},r){let o=r(Wt),a=new TextEncoder().encode(JSON.stringify({v:1,...e})),d=He(Se(n),o,new TextEncoder().encode(t)).encrypt(a),s=new Uint8Array(o.length+d.length);return s.set(o),s.set(d,o.length),xe(s)}var G="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";function xe(e){let t="";for(let n=0;n<e.length;n+=3){let r=e[n]??0,o=e[n+1]??0,a=e[n+2]??0,d=r<<16|o<<8|a,s=e.length-n;t+=G[d>>18&63],t+=G[d>>12&63],s>1&&(t+=G[d>>6&63]),s>2&&(t+=G[d&63])}return t}function Se(e){if(!/^[A-Za-z0-9_-]*$/.test(e)||e.length%4===1)throw new Error("Not base64url");let t=new Uint8Array(Math.floor(e.length*3/4)),n=0;for(let r=0;r<e.length;r+=4){let o=[0,1,2,3].map(s=>{let i=e[r+s];return i===void 0?0:G.indexOf(i)}),a=(o[0]??0)<<18|(o[1]??0)<<12|(o[2]??0)<<6|(o[3]??0),d=e.length-r;t[n++]=a>>16&255,d>2&&(t[n++]=a>>8&255),d>3&&(t[n++]=a&255)}return t}var zt=3,jt=6,ri=zt+jt;var Xt=600*1e3,Vt=900*1024;var oi=new TextEncoder;var hi=new TextEncoder;function We(e){let t=e.name.trim()||void 0;if(e.kind==="xtream"){let r=e.serverUrl.trim(),o=e.username.trim();return!r||!o||!e.password?{problem:"missingLogin"}:{source:{kind:"xtream",serverUrl:r,username:o,password:e.password,name:t}}}let n=e.url.trim();return n?{source:{kind:"playlistUrl",url:n,name:t}}:{problem:"missingUrl"}}var tn={title:"Invia alla TV",kindXtream:"Nome utente e password",kindPlaylistUrl:"Lista da link",message:"Incolla qui il messaggio del fornitore",server:"Server",serverHelp:"Lo trovi nel messaggio del fornitore (URL, Host o DNS)",username:"Nome utente",password:"Password",url:"Indirizzo",name:"Nome (facoltativo)",send:"Invia alla TV",sending:"Invio\u2026",done:"Fatto. Guarda la TV.",missingLogin:"Scrivi server, nome utente e password.",missingUrl:"Scrivi l\u2019indirizzo della lista.",expired:"Codice scaduto. Inquadra di nuovo il codice sulla TV.",offline:"Nessuna connessione. Riprova.",noCode:"Inquadra con il telefono il codice sulla TV.",privacy:"I dati vanno cifrati alla TV e non restano da nessuna parte."},nn={title:"Send to TV",kindXtream:"Username and password",kindPlaylistUrl:"Playlist from link",message:"Paste your provider's message here",server:"Server",serverHelp:"It's in your provider's message (URL, Host or DNS)",username:"Username",password:"Password",url:"Address",name:"Name (optional)",send:"Send to TV",sending:"Sending\u2026",done:"Done. Look at your TV.",missingLogin:"Enter server, username and password.",missingUrl:"Enter the address of the playlist.",expired:"The code has expired. Scan the code on the TV again.",offline:"No connection. Try again.",noCode:"Scan the code on the TV with your phone.",privacy:"Your details travel encrypted to the TV and are not kept anywhere."};function we(e){return e[0]?.toLowerCase().startsWith("it")?tn:nn}var T=we(navigator.languages??[navigator.language]),Y=ye(location.hash);history.replaceState(null,"",location.pathname);var J=e=>document.getElementById(e),A=e=>J(e);document.documentElement.lang=T===we(["it"])?"it":"en";document.title=`Tivy \xB7 ${T.title}`;for(let e of document.querySelectorAll("[data-text]"))e.textContent=T[e.dataset.text];var q=J("form"),ze=J("status"),V=J("send"),Q="xtream";function M(e,t=!1){ze.textContent=e,ze.className=t?"status done":"status"}Y||(q.hidden=!0,M(T.noCode));for(let e of document.querySelectorAll("[data-kind]"))e.addEventListener("click",()=>{Q=e.dataset.kind;for(let t of document.querySelectorAll("[data-kind]"))t.setAttribute("aria-pressed",String(t===e));for(let t of document.querySelectorAll("[data-for]"))t.hidden=t.dataset.for!==Q;M("")});A("message").addEventListener("input",()=>{let e=ae(A("message").value);e.serverUrl&&(A("server").value=e.serverUrl),e.username&&(A("username").value=e.username),e.password!==void 0&&(A("password").value=e.password)});q.addEventListener("submit",e=>{if(e.preventDefault(),!Y)return;let t=We({kind:Q,serverUrl:A("server").value,username:A("username").value,password:A("password").value,url:A("url").value,name:Q==="xtream"?A("name").value:A("listName").value});if("problem"in t){M(T[t.problem]);return}let n=o=>crypto.getRandomValues(new Uint8Array(o)),r=be(t.source,Y,n);V.disabled=!0,V.textContent=T.sending,M(""),fetch(`https://relay.dlzero.com/r/${Y.room}`,{method:"POST",headers:{"Content-Type":"text/plain"},body:r}).then(o=>{if(o.ok){q.reset(),q.hidden=!0,M(T.done,!0);return}M(o.status===404||o.status===410?T.expired:T.offline)}).catch(()=>M(T.offline)).finally(()=>{V.disabled=!1,V.textContent=T.send})});})();
+/*! Bundled license information:
+
+@noble/ciphers/utils.js:
+  (*! noble-ciphers - MIT License (c) 2023 Paul Miller (paulmillr.com) *)
+*/
+
+    </script>
+  </body>
+</html>

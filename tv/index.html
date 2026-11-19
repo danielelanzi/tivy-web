@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0d12" />
+    <meta name="robots" content="noindex" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Tivy" />
+    <!-- Opened from the Home Screen of an iPhone, the dark app goes under the clock and the
+         battery, like a TV screen: the stage keeps clear of them (safe area, below). -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="favicon.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <title>Tivy</title>
+    <style id="expo-reset">
+      /*
+       * The app is drawn on a stage at least 1920×1080, like a TV screen, scaled to the
+       * window. The stage takes the shape of the window, so a wide window has no empty bars
+       * at the sides: the side menu stays on the left edge (see theme/scaledPixels.web.ts).
+       * A window taller than wide, like a phone held upright, gets a stage at least 1080×1920:
+       * the same app, with fewer cards on a row and more rows on screen.
+       * The stage is fixed to the screen, not placed in the page: a phone turned sideways and
+       * back would otherwise keep the page as wide as the landscape stage, and the app would
+       * stay drawn for landscape on half of the portrait screen.
+       * The stage keeps clear of the notch, the clock and the bar at the bottom of a phone
+       * (safe area): opened from the Home Screen, the page covers the whole screen.
+       */
+      #safe-area {
+        position: fixed;
+        visibility: hidden;
+        pointer-events: none;
+        padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+          env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: #0b0d12;
+        overflow: hidden;
+      }
+      #root {
+        position: fixed;
+        left: var(--stage-left, 0px);
+        top: var(--stage-top, 0px);
+        width: var(--stage-width, 1920px);
+        height: var(--stage-height, 1080px);
+        display: flex;
+        transform: scale(var(--stage-scale, 0.5));
+        transform-origin: 0 0;
+        overflow: hidden;
+        /* A finger moves the rows and the page of the app (touch/), not the browser's page. */
+        touch-action: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+      }
+      #root input,
+      #root textarea {
+        -webkit-user-select: text;
+        user-select: text;
+      }
+      /* The app draws its own focus: the browser's blue outline would add a second one. */
+      #root *:focus,
+      #root *:focus-visible {
+        outline: none;
+      }
+      /* Subtitles in the browser, readable from the sofa. */
+      video::cue {
+        font-family: system-ui, sans-serif;
+        font-size: 1.15em;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.6);
+      }
+      /* Shown only when the app does not start: see the script at the end. */
+      #boot-problem {
+        display: none;
+        position: fixed;
+        /* Not "inset": TV browsers before 2022 do not know it. */
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 16px;
+        padding: 24px;
+        text-align: center;
+        color: #f4f5f7;
+        font:
+          18px system-ui,
+          sans-serif;
+      }
+      #boot-problem h1 {
+        margin: 0;
+        font-size: 28px;
+      }
+      #boot-problem p {
+        margin: 0;
+        max-width: 520px;
+        color: #a3a8b4;
+        line-height: 1.5;
+      }
+      #boot-problem button {
+        margin-top: 8px;
+        padding: 12px 28px;
+        border: 0;
+        border-radius: 999px;
+        background: #f4f5f7;
+        color: #0b0d12;
+        font:
+          600 17px system-ui,
+          sans-serif;
+        cursor: pointer;
+      }
+    </style>
+    <script>
+      // The video provider answers only in http, and a page opened with https may not load
+      // http lists and videos. Some browsers (Safari on iPhone, for example) open https by
+      // themselves: go back to http, once per tab, so that a browser that insists on https
+      // does not loop. The app then explains the problem when a list is added.
+      (function () {
+        if (location.protocol !== 'https:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname))
+          return;
+        var KEY = 'tivy.httpRedirect';
+        try {
+          if (sessionStorage.getItem(KEY)) return;
+          sessionStorage.setItem(KEY, '1');
+        } catch (error) {
+          return;
+        }
+        location.replace(
+          'http://' + location.host + location.pathname + location.search + location.hash,
+        );
+      })();
+    </script>
+    <script>
+      (function () {
+        var last = '';
+        var probe = document.createElement('div');
+        probe.id = 'safe-area';
+        document.documentElement.appendChild(probe);
+        function inset(side) {
+          return parseFloat(getComputedStyle(probe).getPropertyValue('padding-' + side)) || 0;
+        }
+        function fit() {
+          var left = inset('left');
+          var top = inset('top');
+          var width = window.innerWidth - left - inset('right');
+          var height = window.innerHeight - top - inset('bottom');
+          var scale =
+            height > width
+              ? Math.min(width / 1080, height / 1920)
+              : Math.min(width / 1920, height / 1080);
+          var stageWidth = width / scale;
+          var stageHeight = height / scale;
+          var key = [scale, stageWidth, stageHeight, left, top].join(' ');
+          if (key === last) return;
+          last = key;
+          var style = document.documentElement.style;
+          style.setProperty('--stage-scale', String(scale));
+          style.setProperty('--stage-width', stageWidth + 'px');
+          style.setProperty('--stage-height', stageHeight + 'px');
+          style.setProperty('--stage-left', left + 'px');
+          style.setProperty('--stage-top', top + 'px');
+          window.dispatchEvent(new Event('tivystagechange'));
+        }
+        // Phones can report the old size while the screen is still turning: measure again
+        // once the turn is over.
+        function fitAfterTurn() {
+          fit();
+          setTimeout(fit, 150);
+          setTimeout(fit, 500);
+        }
+        fit();
+        window.addEventListener('resize', fit);
+        window.addEventListener('orientationchange', fitAfterTurn);
+        if (window.visualViewport) window.visualViewport.addEventListener('resize', fit);
+        if (screen.orientation) screen.orientation.addEventListener('change', fitAfterTurn);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <noscript>Per usare Tivy attiva JavaScript nel browser.</noscript>
+    <div id="root"></div>
+    <div id="boot-problem" role="alert">
+      <h1 data-text="title">Tivy non si è aperto</h1>
+      <p data-text="message">
+        Può succedere se la connessione è lenta o è saltata durante il caricamento.
+      </p>
+      <button type="button" data-text="reload" onclick="location.reload()">
+        Ricarica la pagina
+      </button>
+    </div>
+    <script>
+      if (!/^it\b/i.test(navigator.language || '')) {
+        document.documentElement.lang = 'en';
+        var english = {
+          title: "Tivy didn't open",
+          message: 'This can happen when the connection is slow or dropped while loading.',
+          reload: 'Reload the page',
+        };
+        document.querySelectorAll('#boot-problem [data-text]').forEach(function (element) {
+          element.textContent = english[element.getAttribute('data-text')];
+        });
+      }
+      // The app has not drawn anything after a while, or its code did not load: the page says
+      // so, instead of staying black.
+      (function () {
+        var BOOT_LIMIT_MS = 20000;
+        function showProblem() {
+          if (document.getElementById('root').childElementCount > 0) return;
+          document.getElementById('boot-problem').style.display = 'flex';
+        }
+        setTimeout(showProblem, BOOT_LIMIT_MS);
+        window.addEventListener(
+          'error',
+          function (event) {
+            if (event.target && event.target.tagName === 'SCRIPT') showProblem();
+          },
+          true,
+        );
+      })();
+    </script>
+  <script>
+      (function () {
+        var scripts = '<script src="/tv/_expo/static/js/web/__expo-metro-runtime-1f8f5d3ca6b7f58204d51e14506d73fb.js" defer><\/script>';
+        try {
+          new Function("class A { static #a = 1; static { A.#a; } } null?.a ?? 1;");
+        } catch (error) {
+          scripts = '<script src="/tv/_expo/static/older/polyfills.js" defer><\/script><script src="/tv/_expo/static/js/older/__expo-metro-runtime-1f8f5d3ca6b7f58204d51e14506d73fb.js" defer><\/script>';
+        }
+        document.write(scripts);
+      })();
+    </script><script src="/tv/_expo/static/js/web/__common-1468a30b4ab4fa3877b478e20b89f9f1.js" defer></script><script src="/tv/_expo/static/js/web/index-eafa8bd90a3d03f57e5c037b1d49a8de.js" defer></script>
+</body>
+</html>

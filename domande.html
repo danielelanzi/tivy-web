@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="it" data-lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0d12" />
+    <title>Tivy · Domande</title>
+    <link rel="icon" href="favicon.png" />
+    <link rel="preload" href="outfit.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      /* Outfit (SIL Open Font License 1.1, outfit-license.txt) served by this site. */
+      @font-face {
+        font-family: Outfit;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(outfit.woff2) format('woff2');
+      }
+      :root {
+        --background: #0b0d12;
+        --surface: #151821;
+        --line: #272c38;
+        --text: #f4f5f7;
+        --muted: #a3a8b4;
+        --accent: #e8b04b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--text);
+        font-family: Outfit, system-ui, sans-serif;
+        line-height: 1.5;
+      }
+      a {
+        color: var(--accent);
+      }
+      .page {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      header img {
+        height: 56px;
+        width: auto;
+        margin: -8px 0 0 -10px;
+      }
+      h1 {
+        margin: 48px 0 32px;
+        font-size: clamp(36px, 6vw, 60px);
+        line-height: 1.05;
+        font-weight: 800;
+      }
+      .questions {
+        display: grid;
+        gap: 16px;
+      }
+      .item {
+        padding: 20px 24px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface);
+      }
+      .item h2 {
+        margin: 0 0 6px;
+        font-size: 21px;
+        font-weight: 700;
+      }
+      .item p {
+        margin: 0;
+        color: #c9cdd6;
+        font-size: 17px;
+      }
+      footer {
+        margin-top: 48px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 14px;
+      }
+      html[data-lang='it'] [data-l='en'],
+      html[data-lang='en'] [data-l='it'] {
+        display: none !important;
+      }
+      .language {
+        min-height: 36px;
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .language:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <a href="./"><img src="logo.png" alt="Tivy" width="90" height="56" /></a>
+        <button class="language" id="language" type="button">
+          <span data-l="it">English</span><span data-l="en">Italiano</span>
+        </button>
+      </header>
+      <h1><span data-l="it">Domande</span><span data-l="en">Questions</span></h1>
+      <section class="questions">
+        <div class="item">
+          <h2>
+            <span data-l="it">Tivy ha film e canali?</span
+            ><span data-l="en">Does Tivy have films and channels?</span>
+          </h2>
+          <p data-l="it">
+            No. Tivy mostra solo le fonti che aggiungi tu, come la lista del tuo fornitore.
+          </p>
+          <p data-l="en">
+            No. Tivy shows only the sources you add, such as your provider&#x27;s list.
+          </p>
+        </div>
+        <div class="item">
+          <h2>
+            <span data-l="it">Come aggiungo la mia lista?</span
+            ><span data-l="en">How do I add my list?</span>
+          </h2>
+          <p data-l="it">
+            Impostazioni › Gestisci fonti › Aggiungi fonte. Sulla TV puoi usare il telefono:
+            inquadra il codice.
+          </p>
+          <p data-l="en">
+            Settings › Manage sources › Add source. On the TV you can use your phone: scan the code.
+          </p>
+        </div>
+        <div class="item">
+          <h2>
+            <span data-l="it">Il video non parte</span
+            ><span data-l="en">The video does not start</span>
+          </h2>
+          <p data-l="it">
+            Chiudi Tivy e gli altri lettori sugli altri dispositivi: di solito l&#x27;abbonamento
+            vale per un video alla volta. Poi premi Riprova.
+          </p>
+          <p data-l="en">
+            Close Tivy and other players on your other devices: a subscription usually allows one
+            video at a time. Then press Try again.
+          </p>
+        </div>
+        <div class="item">
+          <h2>
+            <span data-l="it">Dice che l&#x27;abbonamento è scaduto</span
+            ><span data-l="en">It says the subscription has expired</span>
+          </h2>
+          <p data-l="it">Rinnovalo con il tuo fornitore. Tivy non vende abbonamenti.</p>
+          <p data-l="en">Renew it with your provider. Tivy does not sell subscriptions.</p>
+        </div>
+        <div class="item">
+          <h2>
+            <span data-l="it">Non trovo un film o un canale</span
+            ><span data-l="en">I can&#x27;t find a film or a channel</span>
+          </h2>
+          <p data-l="it">Usa Cerca. Guarda anche Impostazioni › Lingue da mostrare.</p>
+          <p data-l="en">Use Search. Also check Settings › Languages to show.</p>
+        </div>
+        <div class="item">
+          <h2>
+            <span data-l="it">Come cambio audio e sottotitoli?</span
+            ><span data-l="en">How do I change audio and subtitles?</span>
+          </h2>
+          <p data-l="it">Durante il video scegli «Audio e sottotitoli».</p>
+          <p data-l="en">While the video plays, choose “Audio and subtitles”.</p>
+        </div>
+        <div class="item">
+          <h2>
+            <span data-l="it">Dove sono i contenuti per adulti?</span
+            ><span data-l="en">Where is the adult content?</span>
+          </h2>
+          <p data-l="it">
+            Sono nascosti. Per vederli: Impostazioni › Contenuti per adulti (+18) › Sezione +18.
+          </p>
+          <p data-l="en">It is hidden. To see it: Settings › Adult content (18+) › +18 section.</p>
+        </div>
+        <div class="item">
+          <h2>
+            <span data-l="it">Come passo Tivy su un altro dispositivo?</span
+            ><span data-l="en">How do I move Tivy to another device?</span>
+          </h2>
+          <p data-l="it">Impostazioni › I miei dati › Copia.</p>
+          <p data-l="en">Settings › My data › Copy.</p>
+        </div>
+        <div class="item">
+          <h2>
+            <span data-l="it">Come proteggo i bambini?</span
+            ><span data-l="en">How do I protect children?</span>
+          </h2>
+          <p data-l="it">
+            Imposta il PIN, poi crea un profilo bambini e scegli il tempo al giorno.
+          </p>
+          <p data-l="en">Set a PIN, then create a kids profile and choose the time per day.</p>
+        </div>
+        <div class="item">
+          <h2>
+            <span data-l="it">Il testo è troppo piccolo</span
+            ><span data-l="en">The text is too small</span>
+          </h2>
+          <p data-l="it">Impostazioni › Dimensione del testo › Grande.</p>
+          <p data-l="en">Settings › Text size › Large.</p>
+        </div>
+        <div class="item">
+          <h2><span data-l="it">Tivy è gratis?</span><span data-l="en">Is Tivy free?</span></h2>
+          <p data-l="it">Oggi sì.</p>
+          <p data-l="en">Today, yes.</p>
+        </div>
+        <div class="item">
+          <h2>
+            <span data-l="it">I miei dati sono al sicuro?</span
+            ><span data-l="en">Is my data safe?</span>
+          </h2>
+          <p data-l="it">
+            Liste e password restano sui tuoi dispositivi. Tivy non raccoglie dati personali. Per
+            schede e trailer, Wikidata, Wikipedia e YouTube ricevono solo titolo e anno di ciò che
+            apri.
+          </p>
+          <p data-l="en">
+            Lists and passwords stay on your devices. Tivy collects no personal data. For title
+            pages and trailers, Wikidata, Wikipedia and YouTube get only the title and year of what
+            you open.
+          </p>
+        </div>
+        <div class="item">
+          <h2>
+            <span data-l="it">Qualcosa non va?</span><span data-l="en">Something wrong?</span>
+          </h2>
+          <p data-l="it">
+            Scrivi a <a href="mailto:aiuto@dlzero.com">aiuto@dlzero.com</a>. Nell'app: Impostazioni
+            › Qualcosa non va?
+          </p>
+          <p data-l="en">
+            Write to <a href="mailto:aiuto@dlzero.com">aiuto@dlzero.com</a>. In the app: Settings ›
+            Something wrong?
+          </p>
+        </div>
+      </section>
+
+      <footer>
+        <p>© 2026 DLZero</p>
+        <a href="./"
+          ><span data-l="it">Torna alla pagina di download</span
+          ><span data-l="en">Back to the download page</span></a
+        >
+      </footer>
+    </div>
+
+    <script>
+      function chooseLanguage() {
+        try {
+          const saved = localStorage.getItem('tivy.language');
+          if (saved === 'it' || saved === 'en') return saved;
+        } catch {
+          // No storage: follow the browser.
+        }
+        return (navigator.language || 'it').toLowerCase().startsWith('it') ? 'it' : 'en';
+      }
+
+      let language = chooseLanguage();
+
+      function setLanguage(next) {
+        language = next;
+        document.documentElement.lang = next;
+        document.documentElement.dataset.lang = next;
+      }
+
+      document.getElementById('language').addEventListener('click', () => {
+        const next = language === 'it' ? 'en' : 'it';
+        try {
+          localStorage.setItem('tivy.language', next);
+        } catch {
+          // The choice lasts until the page closes.
+        }
+        setLanguage(next);
+      });
+
+      setLanguage(language);
+    </script>
+  </body>
+</html>
